@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:solution_cha/OtpVerifyPage.dart';
 import 'package:solution_cha/phoneSignup.dart';
+import 'package:solution_cha/phoneWrapper.dart';
 import 'package:solution_cha/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -13,7 +16,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         textTheme: TextTheme(
           bodyLarge: TextStyle(fontFamily: 'K2D'),
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: "Hearth",
-      home: phoneSignup(),
+      home: AuthWrapper(),
     );
   }
 }

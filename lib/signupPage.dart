@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:solution_cha/homepage.dart';
+import 'package:solution_cha/phoneSignup.dart';
+import 'package:solution_cha/phoneWrapper.dart';
 import 'package:solution_cha/wrapper.dart';
 import 'package:solution_cha/colors.dart';
 import 'package:solution_cha/emailSignup.dart';
@@ -128,7 +130,12 @@ class _firstPageState extends State<firstPage> {
               height: 30,
             ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => phoneSignup()),
+                );
+              },
               icon: Icon(
                 Icons.phone_enabled_outlined,
                 size: 30,

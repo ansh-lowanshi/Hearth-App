@@ -22,7 +22,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
   void checkUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      // Ensure navigation happens outside build phase
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.pushAndRemoveUntil(
             context,
@@ -31,7 +30,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
       });
     } else {
       bool userExists = await AuthService().checkIfUserExists(user.uid);
-      // Ensure navigation happens outside build phase
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (userExists) {
           Navigator.push(

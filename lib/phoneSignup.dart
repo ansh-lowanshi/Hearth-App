@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:solution_cha/OtpVerifyPage.dart';
 import 'package:solution_cha/colors.dart';
 
 class phoneSignup extends StatefulWidget {
@@ -10,7 +13,34 @@ class phoneSignup extends StatefulWidget {
 
 class _phoneSignupState extends State<phoneSignup> {
   String _selectedCountryCode = '+91';
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
+  sendOTP() async {
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+
+      // phoneNumber: '+91${phoneController.text}',
+      phoneNumber: '$_selectedCountryCode${phoneController.text.trim()}',
+
+
+      verificationCompleted: (PhoneAuthCredential credential){},
+
+      verificationFailed: (FirebaseAuthException e){
+        print(e.toString());
+        Get.snackbar('Error Occured',e.code);
+      }, 
+
+      codeSent: (String vid, int? token){
+        Get.to(OtpPage(vid:vid,),);
+      },
+
+      codeAutoRetrievalTimeout: (vid){}
+      );
+    } catch (e) {
+      Get.snackbar('Erroe Occured',e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +58,7 @@ class _phoneSignupState extends State<phoneSignup> {
         toolbarHeight: 100,
         elevation: 5,
       ),
+      backgroundColor: color3,
       body: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -35,21 +66,25 @@ class _phoneSignupState extends State<phoneSignup> {
             padding: EdgeInsets.all(20),
             child: Form(
               //form key will be used further
-              // key: _formKey, 
+              // key: _formKey,
               child: Column(
                 children: [
-                  Text("Enter the Phone number",style:TextStyle(
-                    fontSize: 25,
-                    color: color4
-                  ),),
-                  SizedBox(height: 10,),
-                  Text('We will send an OTP on this number',style:TextStyle(
-                    fontSize: 15,
-                    color: color4
-                  ),),
-                  SizedBox(height: 30,),
+                  Text(
+                    "Enter the Phone number",
+                    style: TextStyle(fontSize: 25, color: color4),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'We will send an OTP on this number',
+                    style: TextStyle(fontSize: 15, color: color4),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
                   TextFormField(
-                    controller: _phoneController,
+                    controller: phoneController,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
@@ -85,7 +120,8 @@ class _phoneSignupState extends State<phoneSignup> {
                           ),
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 12),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -94,13 +130,14 @@ class _phoneSignupState extends State<phoneSignup> {
                       return null;
                     },
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 30,
                   ),
 
                   // Get otp button
                   ElevatedButton(
                     onPressed: () async {
+                      sendOTP();
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 60),
